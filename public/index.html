@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="./components/bootstrap/dist/css/bootstrap.min.css">
+    <script type="application/javascript" src="./components/jquery/dist/jquery.min.js"></script>
+    <script type="application/javascript" src="./components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="application/javascript" src="./components/angular/angular.js"></script>
+    <script type="application/javascript" src="./app.js"></script>
+
+
+</head>
+
+<body ng-app="app" ng-cloak>
+    <div class="container">
+        <h1>Wypożyczalnia samochodów</h1>
+        <div class="row">
+            <div ng-controller="NewCarController" class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Nowy samochód</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Marka</label>
+                                <input class="form-control" type="text" name="brand" placeholder="Marka" ng-model="car.brand">
+                            </div>
+                            <div class="form-group">
+                                <label>Model</label>
+                                <input class="form-control" type="text" name="model" placeholder="Model" ng-model="car.model">
+                            </div>
+                            <div class="form-group">
+                                <label>Przebieg</label>
+                                <input class="form-control" type="number" name="milage" placeholder="Przebieg" ng-model="car.milage">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success" ng-click="onSubmit()">Dodaj</button>
+                            </div>
+
+                            <div ng-if="alert" class="alert" ng-class="alert === true ? 'alert-success' : 'alert-danger'">
+                                <span ng-if="alert === true">Pomyślnie dodano samochód</span>
+                                <span ng-if="alert === false">Wystąpił błąd</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--NewCar-->
+            </div>
+
+            <div ng-controller="NewRentalController" class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Nowe wypożyczenie</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Identyfikator</label>
+                                <input class="form-control" type="text" name="carId" placeholder="Identyfikator" ng-model="rental.carId">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Imię</label>
+                                <input class="form-control" type="text" name="name" placeholder="Imię" ng-model="rental.name">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Nazwisko</label>
+                                <input class="form-control" type="text" name="surname" placeholder="Nazwisko" ng-model="rental.surname">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Data wypożyczenia</label>
+                                <input class="form-control" type="date" name="rental-date" ng-model="rental.date">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Data zwrotu</label>
+                                <input class="form-control" type="date" name="return-date" ng-model="rental.returnDate">
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success" ng-click="onSubmit()">Dodaj</button>
+                            </div>
+
+                            <div ng-if="alert !== undefined" class="alert" ng-class="alert === true ? 'alert-success' : 'alert-danger'">
+                                <span ng-if="alert === true">Pomyślnie dodano wypożyczenie</span>
+                                <span ng-if="alert === false">Wystąpił błąd</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--NewRental-->
+            </div>
+        </div>
+
+
+        <div class="row" ng-controller="CarsController">
+            <div class="col-lg-6">
+                 <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Wolne samochody</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="list-group">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Marka</th>
+                                        <th>Model</th>
+                                        <th>Przebieg</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="car in freeCars">
+                                        <td>{{car._id}}</td>
+                                        <td>{{car.brand}}</td>
+                                        <td>{{car.model}}</td>
+                                        <td>{{car.milage}}</td>
+                                        <td>
+                                            <a href="" ng-click="onDelete($index)" class="text-danger">Usuń</a>
+                                            |
+                                            <a href="" ng-click="onRent(car._id)">Wypożycz</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            <div class="col-lg-6">
+                 <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Wypożyczone samochody</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="list-group">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Samochód</th>
+                                        <th>Wypożyczający</th>
+                                        <th>Okres wypożyczenia</th>
+                                        <th>Data zwrotu</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="car in rentedCars">
+                                        <td>{{car.brand}} {{car.model}}</td>
+                                        <td>{{car.rental.name}} {{car.rental.surname}}</td>
+                                        <td>{{car.rental.date}} - {{car.rental.returnDate}}</td>
+                                        <td>
+                                            <a href="" ng-click="onReturn($index)">Zwróć</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+
+</html>
