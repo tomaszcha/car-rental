@@ -1,2 +1,2 @@
 # car-rental
-Wypożyczalnia samochodów v.3
+Wypożyczalnia samochodów v3
